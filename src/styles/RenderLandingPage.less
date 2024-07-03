@@ -17,9 +17,11 @@
     margin-bottom: 10%;
 }
 
-*{
-    font-family: 'moneta';
+
+:root {
+    --secondary-font: 'moneta';
 }
+
 
 .hrf-logo-img-container img {
     height: 64px;
@@ -116,6 +118,7 @@
 .bottom-section h1{
     text-align:center;
     font-size: 4rem;
+    font-family: var(--secondary-font);
     margin-bottom: 150px;
 }
 .data-container{
@@ -131,9 +134,11 @@
 .data-container div h4{
     text-align:center;
     font-size: 2rem;
+    font-family: var(--secondary-font);
 }
 .data-container div p{
     font-size: 1.5rem;
+    font-family: var(--secondary-font);
     text-align: center;
 }
 
@@ -147,6 +152,7 @@
     cursor: pointer;
     color: black;
     margin: 5% auto;
+    text-align: center;
 }
 
 .ant-space-align-center {

@@ -67,7 +67,9 @@ function RenderLandingPage(props) {
         >
           View the Data
         </Button>
-        <Button>Download the Data</Button>
+        <Button style={{ backgroundColor: '#404C4A', color: '#FFFFFF' }}>
+          Download the Data
+        </Button>
       </div>
 
       <div className="middle-section">
@@ -115,8 +117,10 @@ function RenderLandingPage(props) {
               </p>
             </div>
           </div>
-          <div className='read-more'>
-            <Button>Read More</Button>
+          <div className="read-more">
+            <Button style={{ backgroundColor: '#404C4A', color: '#FFFFFF' }}>
+              Read More
+            </Button>
           </div>
         </div>
         {/* <div className="bottom-section">*/}
