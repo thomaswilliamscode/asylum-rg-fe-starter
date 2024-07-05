@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import CitizenshipMapAll from './Graphs/CitizenshipMapAll';
@@ -14,11 +14,17 @@ import test_data from '../../../data/test_data.json';
 import { colors } from '../../../styles/data_vis_colors';
 import ScrollToTopOnMount from '../../../utils/scrollToTopOnMount';
 
+    const baseUrl = 'https://hrf-asylum-be-b.herokuapp.com/cases';
+    const fiscal = '/fiscalSummary';
+    const citizenship = '/citizenshipSummary';
+    let url = `${baseUrl}${fiscal}`;
+
 const { background_color } = colors;
 
 function GraphWrapper(props) {
   const { set_view, dispatch } = props;
   let { office, view } = useParams();
+
   if (!view) {
     set_view('time-series');
     view = 'time-series';
@@ -50,7 +56,51 @@ function GraphWrapper(props) {
         break;
     }
   }
-  function updateStateWithNewData(years, view, office, stateSettingCallback) {
+
+  async function axiosCall(params) {
+    const baseUrl = 'https://hrf-asylum-be-b.herokuapp.com/cases';
+    const fiscal = '/fiscalSummary';
+    const citizenship = '/citizenshipSummary';
+    let url = `${baseUrl}${fiscal}`;
+    let dataArray = [];
+    let dataObj = {};
+
+    const fiscalData = await axios.get(url, {
+      params: {
+        from: params.start,
+        to: params.end
+      },
+    })
+      .then( (res) => {
+        dataObj = res.data;
+        return res.data;
+      })
+      .catch( (err) => {
+        console.log(err.message);
+        return err.message;
+      });
+      url = `${baseUrl}${citizenship}`;
+    const citizenData = await axios
+      .get(url, {
+        params: {
+          from: params.start,
+          to: params.end,
+        },
+      })
+      .then(res => {
+        dataObj.citizenshipResults = res.data;
+        return res.data;
+      })
+      .catch(err => {
+        console.log(err.message);
+        return err.message;
+      });
+
+      dataArray.push(dataObj);
+      return dataArray;
+  }
+
+  async function updateStateWithNewData(years, view, office, stateSettingCallback) {
     /*
           _                                                                             _
         |                                                                                 |
@@ -73,37 +123,24 @@ function GraphWrapper(props) {
     
     */
 
+    //call both urls, combine data, grab data for what is needed
+
     if (office === 'all' || !office) {
-      axios
-        .get(process.env.REACT_APP_API_URI, {
-          // mock URL, can be simply replaced by `${Real_Production_URL}/summary` in prod!
-          params: {
-            from: years[0],
-            to: years[1],
-          },
-        })
-        .then(result => {
-          stateSettingCallback(view, office, test_data); // <-- `test_data` here can be simply replaced by `result.data` in prod!
-        })
-        .catch(err => {
-          console.error(err);
-        });
+      let params = { start: years[0], end: years[1]};
+      let result = await axiosCall(params);
+      if (view === 'time-series') {
+        stateSettingCallback(view, office, result);
+      } else {
+        stateSettingCallback(view, office, result);
+      }
     } else {
-      axios
-        .get(process.env.REACT_APP_API_URI, {
-          // mock URL, can be simply replaced by `${Real_Production_URL}/summary` in prod!
-          params: {
-            from: years[0],
-            to: years[1],
-            office: office,
-          },
-        })
-        .then(result => {
-          stateSettingCallback(view, office, test_data); // <-- `test_data` here can be simply replaced by `result.data` in prod!
-        })
-        .catch(err => {
-          console.error(err);
-        });
+      let params = { start: years[0], end: years[1], office: office };
+      let result = await axiosCall(params);
+      if (view === 'time-series') {
+        stateSettingCallback(view, office, result);
+      } else {
+        stateSettingCallback(view, office, result);
+      }
     }
   }
   const clearQuery = (view, office) => {
