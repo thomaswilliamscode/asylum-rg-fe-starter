@@ -66,6 +66,7 @@ p {
          url('./assets/Fonts/Moneta_Bold/Moneta_Bold.ttf') format('truetype');
 }
 
+
 /* This is where we define the CSS fonts as global variables to be referenced later */
 :root {
     --primary-color-white: #FFFFFF;

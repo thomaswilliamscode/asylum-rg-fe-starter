@@ -3,8 +3,10 @@ import { Image } from 'antd';
 import { Link } from 'react-router-dom';
 import Logo from '../../styles/Images/WhiteLogo.png';
 import { colors } from '../../styles/data_vis_colors';
+import AuthNav from '../auth-nav';
 
 const { primary_accent_color } = colors;
+
 
 function HeaderContent() {
   // useState for isLogged in
@@ -15,6 +17,7 @@ function HeaderContent() {
         justifyContent: 'space-between',
         width: '100%',
         backgroundColor: primary_accent_color,
+        // border: '1px solid orange',
       }}
     >
       <div className="hrf-logo">
@@ -22,15 +25,18 @@ function HeaderContent() {
           <Image width={100} src={Logo} preview={false} alt="HRF logo white" />
         </a>
       </div>
-      <div>
-        {/* here have a turnery checking isLoggedIn */}
-        <Link to="/login" style={{ color: '#E2F0F7', paddingRight: '75px' }}>
-          Login
-        </Link>
-        <Link to="/profile" style={{ color: '#E2F0F7', paddingRight: '75px' }}>
-          Profile
-        </Link>
-        <Link to="/" style={{ color: '#E2F0F7', paddingRight: '75px' }}>
+
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-around',
+          width: '20%',
+          //  border: '1px solid blue',
+        }}
+      >
+        <AuthNav />
+        <Link to="/" style={{ color: '#E2F0F7',  }}>
+        {/* {paddingRight: '75px'} */}
           Home
         </Link>
         <Link to="/graphs" style={{ color: '#E2F0F7' }}>
