@@ -53,7 +53,7 @@ function GraphWrapper(props) {
   }
 
 
-  // get data from enpoints all at once. 
+  // get data from endpoints all at once. 
   async function axiosCall(params) {
     // url info
     const baseUrl = 'https://hrf-asylum-be-b.herokuapp.com/cases';

@@ -7,6 +7,7 @@ import { colors } from '../../styles/data_vis_colors';
 const { primary_accent_color } = colors;
 
 function HeaderContent() {
+  // useState for isLogged in
   return (
     <div
       style={{
@@ -22,6 +23,13 @@ function HeaderContent() {
         </a>
       </div>
       <div>
+        {/* here have a turnery checking isLoggedIn */}
+        <Link to="/login" style={{ color: '#E2F0F7', paddingRight: '75px' }}>
+          Login
+        </Link>
+        <Link to="/profile" style={{ color: '#E2F0F7', paddingRight: '75px' }}>
+          Profile
+        </Link>
         <Link to="/" style={{ color: '#E2F0F7', paddingRight: '75px' }}>
           Home
         </Link>
