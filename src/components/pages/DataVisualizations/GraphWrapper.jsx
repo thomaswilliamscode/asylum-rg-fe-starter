@@ -14,11 +14,6 @@ import test_data from '../../../data/test_data.json';
 import { colors } from '../../../styles/data_vis_colors';
 import ScrollToTopOnMount from '../../../utils/scrollToTopOnMount';
 
-    const baseUrl = 'https://hrf-asylum-be-b.herokuapp.com/cases';
-    const fiscal = '/fiscalSummary';
-    const citizenship = '/citizenshipSummary';
-    let url = `${baseUrl}${fiscal}`;
-
 const { background_color } = colors;
 
 function GraphWrapper(props) {
@@ -57,11 +52,15 @@ function GraphWrapper(props) {
     }
   }
 
+
+  // get data from enpoints all at once. 
   async function axiosCall(params) {
+    // url info
     const baseUrl = 'https://hrf-asylum-be-b.herokuapp.com/cases';
     const fiscal = '/fiscalSummary';
     const citizenship = '/citizenshipSummary';
     let url = `${baseUrl}${fiscal}`;
+    // empty array and object to store and combine axios data
     let dataArray = [];
     let dataObj = {};
 
@@ -79,7 +78,10 @@ function GraphWrapper(props) {
         console.log(err.message);
         return err.message;
       });
-      url = `${baseUrl}${citizenship}`;
+
+    // reset url
+    url = `${baseUrl}${citizenship}`;
+
     const citizenData = await axios
       .get(url, {
         params: {
@@ -96,34 +98,12 @@ function GraphWrapper(props) {
         return err.message;
       });
 
+      
       dataArray.push(dataObj);
       return dataArray;
   }
 
   async function updateStateWithNewData(years, view, office, stateSettingCallback) {
-    /*
-          _                                                                             _
-        |                                                                                 |
-        |   Example request for once the `/summary` endpoint is up and running:           |
-        |                                                                                 |
-        |     `${url}/summary?to=2022&from=2015&office=ZLA`                               |
-        |                                                                                 |
-        |     so in axios we will say:                                                    |
-        |                                                                                 |     
-        |       axios.get(`${url}/summary`, {                                             |
-        |         params: {                                                               |
-        |           from: <year_start>,                                                   |
-        |           to: <year_end>,                                                       |
-        |           office: <office>,       [ <-- this one is optional! when    ]         |
-        |         },                        [ querying by `all offices` there's ]         |
-        |       })                          [ no `office` param in the query    ]         |
-        |                                                                                 |
-          _                                                                             _
-                                   -- Mack 
-    
-    */
-
-    //call both urls, combine data, grab data for what is needed
 
     if (office === 'all' || !office) {
       let params = { start: years[0], end: years[1]};
