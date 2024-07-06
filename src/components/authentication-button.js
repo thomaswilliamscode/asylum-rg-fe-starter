@@ -14,12 +14,11 @@ const AuthenticationButton = () => {
 
   return isAuthenticated ? (
     <>
-      <LogoutButton /> <ProfilePage />
+      <LogoutButton /> <ProfileButton />
     </>
   ) : (
     <>
       <LoginButton />
-      <ProfileButton />
     </>
   );
 };
